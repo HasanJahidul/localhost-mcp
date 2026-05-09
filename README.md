@@ -2,6 +2,8 @@
 
 MCP server that inspects, manages, and kills local dev servers. Stop guessing what's on `:3000`.
 
+![demo](demo.gif)
+
 Pairs with [terminal-history-mcp](https://github.com/hasanjahidul/terminal-history-mcp) — together they give your AI agent full memory of your dev environment: what you ran, what's running.
 
 ## Why
