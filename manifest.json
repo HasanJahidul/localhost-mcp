@@ -1,0 +1,52 @@
+{
+  "manifest_version": "0.2",
+  "name": "localhost-mcp",
+  "display_name": "Local Dev Server Inspector",
+  "version": "0.1.0",
+  "description": "Inspect, manage, and kill local dev servers via MCP. Stop guessing what's on :3000.",
+  "long_description": "MCP server that scans your local machine for running dev servers (next, vite, rails, django, etc) via lsof and ps. Five tools: list_dev_servers (full inventory), port_info (single port lookup), kill_server (safe kill, dry-run by default), find_zombies (forgotten processes), port_conflict (diagnose EADDRINUSE). All local, no cloud, no telemetry.",
+  "author": {
+    "name": "Jahidul Hasan",
+    "email": "contact@hasanjahidul.com",
+    "url": "https://github.com/HasanJahidul"
+  },
+  "homepage": "https://github.com/HasanJahidul/localhost-mcp",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HasanJahidul/localhost-mcp"
+  },
+  "license": "MIT",
+  "keywords": [
+    "mcp",
+    "localhost",
+    "dev-server",
+    "ports",
+    "process",
+    "lsof",
+    "zombie",
+    "kill",
+    "claude"
+  ],
+  "tools": [
+    { "name": "list_dev_servers", "description": "List all dev servers listening on TCP ports with port, pid, framework, project, uptime, mem, cpu." },
+    { "name": "port_info", "description": "Inspect a single port — who is holding it." },
+    { "name": "kill_server", "description": "Kill a dev server by pid or port. Dry-run by default; pass confirm=true to execute. Refuses pid<1000." },
+    { "name": "find_zombies", "description": "Find abandoned dev servers (high uptime, low CPU, lingering memory). Excludes IDE/LSP/agent/DB noise unless include_excluded=true." },
+    { "name": "port_conflict", "description": "Diagnose why a port is busy and suggest 5 free alternatives nearby." }
+  ],
+  "compatibility": {
+    "platforms": ["darwin", "linux", "win32"],
+    "runtimes": {
+      "node": ">=18"
+    }
+  },
+  "server": {
+    "type": "node",
+    "entry_point": "dist/index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": ["${__dirname}/dist/index.js"],
+      "env": {}
+    }
+  }
+}
