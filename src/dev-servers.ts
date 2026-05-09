@@ -46,20 +46,44 @@ export async function portInfo(port: number): Promise<DevServer | null> {
   return all.find((s) => s.port === port) ?? null;
 }
 
+// Cmdline patterns that look dev-server-shaped but are noise (IDEs, LSPs, agents,
+// daemons, in-process MCPs). Never zombie-flag these.
+const ZOMBIE_EXCLUDE_PATTERNS: RegExp[] = [
+  /vscode-server|\.vscode-server/,
+  /vscode\.js-debug/,
+  /[-_]language[-_]server\b/,
+  /\b(pyright|pylsp|gopls|rust-analyzer|clangd|metals|jdtls|solargraph|sorbet|tailwindcss-language-server)\b/,
+  /\bmcp-server[-_]/,
+  /\b(copilot|continue-dev|cursor-agent|claude-code)\b/i,
+  /\b(sidekiq|celery|resque|delayed_job|hangfire)\b/,
+  /\b(redis-server|postgres|mysqld|mongod|memcached|elasticsearch)\b/,
+  /\bnvim\b|\bvim\b|\bemacs\b/,
+  /\bjupyter\b|\bipykernel_launcher\b/,
+];
+
+function isExcludedFromZombie(cmdline: string): boolean {
+  return ZOMBIE_EXCLUDE_PATTERNS.some((re) => re.test(cmdline));
+}
+
 export async function findZombies(): Promise<ZombieCandidate[]> {
   const all = await listDevServers();
   const out: ZombieCandidate[] = [];
   for (const s of all) {
-    const reasons: string[] = [];
-    if (s.uptime_seconds > 24 * 3600) reasons.push(`uptime ${(s.uptime_seconds / 3600).toFixed(1)}h`);
-    if (s.cpu_pct < 1) reasons.push(`cpu ${s.cpu_pct}%`);
-    if (s.memory_mb > 200) reasons.push(`mem ${s.memory_mb}MB`);
-    if (reasons.length >= 2) {
-      out.push({ ...s, reason: reasons.join(", ") });
+    if (isExcludedFromZombie(s.cmdline)) continue;
+    const oldEnough = s.uptime_seconds > 6 * 3600;
+    const idle = s.cpu_pct < 1;
+    const heavy = s.memory_mb > 100;
+    if (oldEnough && idle && heavy) {
+      out.push({
+        ...s,
+        reason: `uptime ${(s.uptime_seconds / 3600).toFixed(1)}h, cpu ${s.cpu_pct}%, mem ${s.memory_mb}MB`,
+      });
     }
   }
   return out;
 }
+
+export { isExcludedFromZombie };
 
 export async function portConflict(port: number): Promise<{
   blocking: DevServer | null;
