@@ -1,5 +1,7 @@
 # localhost-mcp
 
+<img src="assets/logo.png" alt="localhost-mcp" width="180" align="right" />
+
 MCP server that inspects, manages, and kills local dev servers. Stop guessing what's on `:3000`.
 
 ![demo](demo.gif)
