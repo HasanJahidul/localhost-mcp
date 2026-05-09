@@ -65,18 +65,20 @@ function isExcludedFromZombie(cmdline: string): boolean {
   return ZOMBIE_EXCLUDE_PATTERNS.some((re) => re.test(cmdline));
 }
 
-export async function findZombies(): Promise<ZombieCandidate[]> {
+export async function findZombies(opts: { include_excluded?: boolean } = {}): Promise<ZombieCandidate[]> {
   const all = await listDevServers();
   const out: ZombieCandidate[] = [];
   for (const s of all) {
-    if (isExcludedFromZombie(s.cmdline)) continue;
+    const excluded = isExcludedFromZombie(s.cmdline);
+    if (excluded && !opts.include_excluded) continue;
     const oldEnough = s.uptime_seconds > 6 * 3600;
     const idle = s.cpu_pct < 1;
     const heavy = s.memory_mb > 100;
     if (oldEnough && idle && heavy) {
+      const tag = excluded ? " [excluded:IDE/LSP/agent]" : "";
       out.push({
         ...s,
-        reason: `uptime ${(s.uptime_seconds / 3600).toFixed(1)}h, cpu ${s.cpu_pct}%, mem ${s.memory_mb}MB`,
+        reason: `uptime ${(s.uptime_seconds / 3600).toFixed(1)}h, cpu ${s.cpu_pct}%, mem ${s.memory_mb}MB${tag}`,
       });
     }
   }

@@ -45,8 +45,18 @@ const TOOLS = [
   },
   {
     name: "find_zombies",
-    description: "Find dev servers that look abandoned: high uptime, low CPU, lingering memory. Returns candidates with reasons. Does not auto-kill.",
-    inputSchema: { type: "object", properties: {}, additionalProperties: false },
+    description: "Find dev servers that look abandoned: uptime>6h AND cpu<1% AND mem>100MB. Excludes IDE/LSP/agent/DB noise (vscode-server, language-servers, MCPs, postgres, sidekiq, etc) by default. Returns candidates with reasons. Does not auto-kill. Set include_excluded=true to also list noise that meets the heuristic.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        include_excluded: {
+          type: "boolean",
+          description: "Include IDE/LSP/agent/DB processes that match the zombie heuristic. Default false.",
+          default: false,
+        },
+      },
+      additionalProperties: false,
+    },
   },
   {
     name: "port_conflict",
@@ -88,7 +98,8 @@ server.setRequestHandler(CallToolRequestSchema, async (req) => {
         return ok(result);
       }
       case "find_zombies": {
-        const data = await findZombies();
+        const include_excluded = Boolean((args as any)?.include_excluded);
+        const data = await findZombies({ include_excluded });
         return ok({ count: data.length, candidates: data });
       }
       case "port_conflict": {

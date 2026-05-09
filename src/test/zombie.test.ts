@@ -47,3 +47,12 @@ test("does NOT exclude legit forgotten vite", () => {
 test("does NOT exclude legit django runserver", () => {
   assert.equal(isExcludedFromZombie("python manage.py runserver 0.0.0.0:8000"), false);
 });
+
+test("findZombies signature accepts include_excluded option", async () => {
+  const { findZombies } = await import("../dev-servers.js");
+  const a = await findZombies();
+  const b = await findZombies({ include_excluded: true });
+  assert.ok(Array.isArray(a));
+  assert.ok(Array.isArray(b));
+  assert.ok(b.length >= a.length, "include_excluded should be superset");
+});
