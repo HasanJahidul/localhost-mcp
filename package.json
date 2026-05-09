@@ -1,0 +1,57 @@
+{
+  "name": "localhost-mcp",
+  "version": "0.1.0",
+  "description": "Inspect, manage, and kill local dev servers via MCP. Stop guessing what's on :3000.",
+  "type": "module",
+  "bin": {
+    "localhost-mcp": "dist/cli.js"
+  },
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "!dist/test",
+    "!dist/**/*.test.js",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsc --watch",
+    "test": "node --test dist/test/*.test.js",
+    "prepublishOnly": "npm run build && npm test"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "localhost",
+    "ports",
+    "dev-server",
+    "process",
+    "lsof",
+    "zombie",
+    "claude"
+  ],
+  "author": "Jahidul Hasan <contact@hasanjahidul.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/hasanjahidul/localhost-mcp#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hasanjahidul/localhost-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hasanjahidul/localhost-mcp/issues"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
