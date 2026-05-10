@@ -1,0 +1,22 @@
+{
+  "$schema": "https://glama.ai/mcp/schemas/server.json",
+  "maintainers": [
+    "hasanjahidul"
+  ],
+  "name": "localhost-mcp",
+  "description": "MCP server to inspect, manage, and kill local dev servers via lsof + ps. Stop guessing what's on :3000.",
+  "homeUrl": "https://github.com/hasanjahidul/localhost-mcp",
+  "transport": [
+    "stdio"
+  ],
+  "keywords": [
+    "localhost",
+    "ports",
+    "dev-server",
+    "process",
+    "lsof",
+    "zombie",
+    "kill-port",
+    "developer-tools"
+  ]
+}
