@@ -1,6 +1,6 @@
 {
   "name": "localhost-mcp",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Inspect, manage, and kill local dev servers via MCP. Stop guessing what's on :3000.",
   "type": "module",
   "bin": {
