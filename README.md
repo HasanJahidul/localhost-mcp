@@ -4,6 +4,11 @@
 
 # localhost-mcp
 
+[![localhost-mcp MCP server](https://glama.ai/mcp/servers/HasanJahidul/localhost-mcp/badges/score.svg)](https://glama.ai/mcp/servers/HasanJahidul/localhost-mcp)
+[![CI](https://github.com/HasanJahidul/localhost-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/HasanJahidul/localhost-mcp/actions/workflows/ci.yml)
+[![npm version](https://img.shields.io/npm/v/localhost-mcp.svg)](https://www.npmjs.com/package/localhost-mcp)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 MCP server that inspects, manages, and kills local dev servers. Stop guessing what's on `:3000`.
 
 ![demo](demo.gif)
